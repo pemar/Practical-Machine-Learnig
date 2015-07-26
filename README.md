@@ -1,4 +1,6 @@
-# Practical-Machine-Learnig
+# Practical Machine Learning
+##Course Project
+
 Final Project
 
 ##Important!
