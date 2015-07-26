@@ -2,7 +2,7 @@
 title: "Machine Learning Project"
 author: "Pedro Márquez"
 date: "Monday, July 20, 2015"
-output: html_document
+output: pdf_document
 ---
 
 ##Background
