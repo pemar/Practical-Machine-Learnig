@@ -2,7 +2,7 @@
 title: "Machine Learning Project"
 author: "Pedro Márquez"
 date: "Monday, July 20, 2015"
-output: pdf_document
+output: html_document
 ---
 
 ##Background
@@ -100,6 +100,9 @@ NAs <- sapply(colnames(newTrainData),
 cat("We found",sum(NAs),"variables with too many NAs")
 newTrainData <- newTrainData[, !NAs]
 cat("Final training data dimensions:",dim(newTrainData))
+
+#variable at position 53 is 'classe'
+finalTest <- subset(testData, select=colnames(newTrainData[,-53]))
 ```
 
 We partition the training data to get the test data from it:
@@ -150,6 +153,7 @@ prunedtree = prune(fittree,cp=cptarg)
 We now prune the decision tree at the best `complexity parameter`:
 ```{r,echo=TRUE}
 DT.fit <- rpart(classe ~ ., data=newTrainData, method="class", cp=cptarg)
+fancyRpartPlot(DT.fit)
 printcp(DT.fit)
 plotcp(DT.fit)
 ```
@@ -194,18 +198,15 @@ legend("top", colnames(RF.fit$err.rate),col=1:4,cex=0.8,fill=1:4)
 Let's do the prediction with random forest:
 ```{r, echo=TRUE}
 pred.RF <- predict(RF.fit, newTestData, type="class")
-confusionMatrix(pred.RF, newTestData$classe)
+#confusionMatrix(pred.RF, newTestData$classe)
 ```
 
 ##Files to submit
 It seems that Random Forest performed better, as expected, so we use it to submit the files:
-```{r, eval=FALSE}
-vars <- names(newTrainData[,-52])
-finalTest <- testData[vars]
-pred.RF <- predict(RF.fit, finalTest, type="class")
-```
 
 ```{r,echo=TRUE}
+pred.RF <- predict(RF.fit, finalTest, type="class")
+
 pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
